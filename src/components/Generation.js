@@ -21,11 +21,13 @@ function getRandomCoordinateInArray(collumns, rows){
 	return [i, j];
 }
 
-
 class Generation extends Component{
 	//here lies a state that must be adapated to redux system
     state = {
-		grid: gridGenerator()
+		originalGrid: gridGenerator(),
+		grid: gridGenerator(),
+		snakeDirection: "",
+		snakeHeadPosition: []
 	}
 	getNextGrid = (nextGrid) => {
 		this.setState({
@@ -39,21 +41,33 @@ class Generation extends Component{
 		myGrid[food[0]][food[1]] = 2;
 		myGrid[snake[0]][snake[1]] = 1;
 		this.setState({
-			grid: myGrid
+			grid: myGrid,
+			snakeHeadPosition: [snake[0]][snake[1]]		
 		});
 	}
-	
+	getSnakeDirection = (direction) => {
+		this.setState({
+		  snakeDirection: direction
+		});
+	}
 	render(){
-	  const {grid} = this.state;
+	  const {grid, snakeDirection, snakeHeadPosition, originalGrid} = this.state;
+	  console.log(this.state.snakeDirection)
 	  return(
         <div>
-		  <Grid getNextGrid={this.getNextGrid} grid={grid}/>	
+		  <Grid 
+		    getNextGrid={this.getNextGrid} 
+			grid={grid}
+			originalGrid={originalGrid}
+			snakeDirection={snakeDirection}
+			snakeHeadPosition={snakeHeadPosition}
+		  />	
           <Graphics grid={grid}/>
           <button onClick={this.setOriginalState}>start</button>
-		  <button>UP</button>
-		  <button>DOWN</button>
-		  <button>RIGHT</button>
-		  <button>LEFT</button>
+		  <button onClick={()=> {this.getSnakeDirection('UP')}}>UP</button>
+		  <button onClick={()=> {this.getSnakeDirection('DOWN')}}>DOWN</button>
+		  <button onClick={()=> {this.getSnakeDirection('RIGHT')}}>RIGHT</button>
+		  <button onClick={()=> {this.getSnakeDirection('LEFT')}}>LEFT</button>
 	    </div>
 	  );	
 	}
