@@ -1,30 +1,17 @@
 import React, {Component} from "react";
-import Row from "./Row.js";
+import Snake from "./Snake.js";
+import Food from "./Food.js";
 
-const GridStyle = {
-	height: "400px",
-	width: "400px",
-	position: "relative"
-}
-
-
-class Grid extends Component{	
-	generateRows = (grid) => {
-		return grid.map((row, i) => {
-			return <Row
-              key={i}			
-			  rowOfCells={row}
-			  numberOfRows={grid.length}
-			/>
-		});
-	}
+class Grid extends Component{
+    
 	render(){
-	  const {grid} = this.props;
-	  return(
-        <div style={GridStyle}>
-			{this.generateRows(grid)}		
+	  const {getNextGrid, grid} = this.props;
+	  return( 
+	    <div>
+	  	  <Food grid={grid}/>
+		  <Snake grid={grid}/>
 	    </div>
-	  );	
+	  );
 	}
 } 
 

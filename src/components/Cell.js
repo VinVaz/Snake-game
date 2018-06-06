@@ -1,12 +1,18 @@
 import React, {Component} from "react";
 
-const AliveCellStyle = {
+const SnakeCellStyle = {
 	backgroundColor: "#f00",
 	height: "100%",
 	width: "100%",
 	border: "1px solid #200"
 }
-const DeadCellStyle = {
+const FoodCellStyle = {
+	backgroundColor: "#0f0",
+	height: "100%",
+	width: "100%",
+	border: "1px solid #200"
+}
+const BackgroundCellStyle = {
 	backgroundColor: "#440304",
 	height: "100%",
 	width: "100%",
@@ -28,14 +34,13 @@ class Cell extends Component{
 	
     setCellState = () => {
 		const {state} = this.props;
-		if(state){
-		  return(
-		    <div style={AliveCellStyle}></div>
-		  );
-		} else { 
-		  return(
-		    <div style={DeadCellStyle}></div>
-		  );
+		switch(state){
+			case 1:
+			  return <div style={SnakeCellStyle}></div>;
+			case 2:
+			  return <div style={FoodCellStyle}></div>;
+			default:
+			  return <div style={BackgroundCellStyle}></div>
 		}
 	}
 	

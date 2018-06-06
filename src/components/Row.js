@@ -3,6 +3,7 @@ import Cell from "./Cell.js";
 
 
 class Row extends Component{ 
+	
 	getStyle = () => {
 	  const {numberOfRows} = this.props; 
 	  const myHeight = (100 / numberOfRows) + "%";
@@ -15,6 +16,7 @@ class Row extends Component{
       }
 	  return rowStyle;
 	}
+	
 	generateCells = () => {
 	    const {rowOfCells} = this.props;
 		return rowOfCells.map((cell, j) => {
@@ -25,6 +27,7 @@ class Row extends Component{
 			/>
 		});
 	}
+	
 	render(){
 	  return(
         <div style={this.getStyle()}>
