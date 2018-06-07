@@ -20,7 +20,7 @@ function getRandomCoordinateInArray(collumns, rows){
 	const j = Math.floor(Math.random()* collumns);
 	return [i, j];
 }
-
+let countSnakeBuild = 0
 class Generation extends Component{
 	//here lies a state that must be adapated to redux system
     state = {
@@ -34,6 +34,11 @@ class Generation extends Component{
 	getNextGrid = (nextGrid) => {
 		this.setState({
 			grid: nextGrid
+		});
+	}
+	getNewCoord = (coord) => {
+		this.setState({
+			snakePosition: coord
 		});
 	}
 	setOriginalState = () => {
@@ -66,6 +71,7 @@ class Generation extends Component{
 			snakeHeadPosition={snakeHeadPosition}
 			snakePosition={snakePosition}
 			foodPosition={foodPosition}
+            getNewCoord ={this.getNewCoord}
 		  />	
           <Graphics grid={grid}/>
           <button onClick={this.setOriginalState}>start</button>
