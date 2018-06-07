@@ -17,33 +17,35 @@ function gridGenerator(){
 class Grid extends Component{
 	state ={
 		grid: this.props.grid,
-		snakePosition: [0, 0]
 	}
 	clearGrid = () => {
-		const {originalGrid} = this.props;
+		const {originalGrid, foodPosition} = this.props;
+		let myGrid = gridGenerator();
+		console.log(foodPosition);
+		const i = foodPosition[0], j = foodPosition[1];
+		myGrid[i][j] = 2;
 		this.setState({
-			grid: gridGenerator()
+			grid: myGrid
 		});
 	}
     putSnakeOnGrid(coord){
 		const {getNextGrid} = this.props;
 		const {grid} = this.state;
 		this.clearGrid();
-		console.log(this.state.grid)
 		let myGrid = [...grid];
 		myGrid[coord[0]][coord[1]] = 1;
 		getNextGrid(myGrid);
 	}
 	giveDirection =()=>{
-		const {snakeDirection, grid} = this.props;
+		const {snakeDirection, grid, snakePosition} = this.props;
 		const height = grid.length;
 		const width = grid[0].length;
-        let {snakePosition} = this.state;
-        switch(snakeDirection){
-		  case 'RIGHT':
-		    if(snakePosition[1]<width-1){
+		if(snakePosition.length>0){
+          switch(snakeDirection){
+		    case 'RIGHT':
+		      if(snakePosition[1]<width-1){
 				snakePosition[1]++;
-			}
+			  }
 		    else snakePosition[1] = 0;
 		    break;
 	      case 'LEFT':
@@ -66,8 +68,9 @@ class Grid extends Component{
 			break;
 		  default:
 		    break;
-        }		
-		this.putSnakeOnGrid(snakePosition);
+          }
+		  this.putSnakeOnGrid(snakePosition);
+		}		  
 	}
     componentDidMount(){
 		let myVar = setInterval(this.giveDirection.bind(this), 300)

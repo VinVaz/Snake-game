@@ -27,7 +27,9 @@ class Generation extends Component{
 		originalGrid: gridGenerator(),
 		grid: gridGenerator(),
 		snakeDirection: "",
-		snakeHeadPosition: []
+		snakeHeadPosition: [],
+		snakePosition: [],
+		foodPosition: []
 	}
 	getNextGrid = (nextGrid) => {
 		this.setState({
@@ -42,7 +44,9 @@ class Generation extends Component{
 		myGrid[snake[0]][snake[1]] = 1;
 		this.setState({
 			grid: myGrid,
-			snakeHeadPosition: [snake[0]][snake[1]]		
+			snakeHeadPosition: [snake[0]][snake[1]],
+            snakePosition: snake,
+            foodPosition: food			
 		});
 	}
 	getSnakeDirection = (direction) => {
@@ -51,8 +55,7 @@ class Generation extends Component{
 		});
 	}
 	render(){
-	  const {grid, snakeDirection, snakeHeadPosition, originalGrid} = this.state;
-	  console.log(this.state.snakeDirection)
+	  const {grid, snakeDirection, snakeHeadPosition, originalGrid, snakePosition, foodPosition} = this.state;
 	  return(
         <div>
 		  <Grid 
@@ -61,6 +64,8 @@ class Generation extends Component{
 			originalGrid={originalGrid}
 			snakeDirection={snakeDirection}
 			snakeHeadPosition={snakeHeadPosition}
+			snakePosition={snakePosition}
+			foodPosition={foodPosition}
 		  />	
           <Graphics grid={grid}/>
           <button onClick={this.setOriginalState}>start</button>
