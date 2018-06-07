@@ -4,7 +4,7 @@ import Graphics from "./Graphics.js";
 
 
 function gridGenerator(){
-  const width = 10, height = 10;
+  const width = 20, height = 20;
   let myArray = [];
   for(let i=0; i<height; i++){
 	myArray[i] = [];
@@ -20,7 +20,12 @@ function getRandomCoordinateInArray(collumns, rows){
 	const j = Math.floor(Math.random()* collumns);
 	return [i, j];
 }
-let countSnakeBuild = 0
+function getRandomDirection(){
+	const directions = ['UP', 'DOWN', 'RIGHT', 'LEFT'];
+	const index = Math.floor(Math.random()* 4);
+	return directions[index];
+}
+
 class Generation extends Component{
 	//here lies a state that must be adapated to redux system
     state = {
@@ -29,7 +34,8 @@ class Generation extends Component{
 		snakeDirection: "",
 		snakeHeadPosition: [],
 		snakePosition: [],
-		foodPosition: []
+		foodPosition: [],
+		snake: []
 	}
 	getNextGrid = (nextGrid) => {
 		this.setState({
@@ -41,18 +47,35 @@ class Generation extends Component{
 			snakePosition: coord
 		});
 	}
-	setOriginalState = () => {
-		const myGrid = this.state.grid;
+	createFood = () => {
+		const {grid} = this.state;
+		const myGrid = [...grid];
 		let food = getRandomCoordinateInArray(10, 10);
-		let snake = getRandomCoordinateInArray(10, 10);
 		myGrid[food[0]][food[1]] = 2;
+		this.setState({
+			grid: myGrid,
+            foodPosition: food			
+		});
+	}
+	createSnake = () => {
+		const {grid} = this.state;
+		const myGrid = [...grid];
+		let snake = getRandomCoordinateInArray(10, 10);
 		myGrid[snake[0]][snake[1]] = 1;
 		this.setState({
 			grid: myGrid,
-			snakeHeadPosition: [snake[0]][snake[1]],
             snakePosition: snake,
-            foodPosition: food			
+            snakeDirection: getRandomDirection()
 		});
+	}
+	getSnake = (arr) => {
+		this.setState({
+		  snake: arr
+		});
+	}
+	setOriginalState = () => {
+        this.createFood()
+		this.createSnake()
 	}
 	getSnakeDirection = (direction) => {
 		this.setState({
@@ -72,6 +95,7 @@ class Generation extends Component{
 			snakePosition={snakePosition}
 			foodPosition={foodPosition}
             getNewCoord ={this.getNewCoord}
+			getSnake={this.getSnake}
 		  />	
           <Graphics grid={grid}/>
           <button onClick={this.setOriginalState}>start</button>

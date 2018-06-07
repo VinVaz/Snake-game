@@ -3,7 +3,7 @@ import Snake from "./Snake.js";
 import Food from "./Food.js";
 
 function gridGenerator(){
-  const width = 10, height = 10;
+  const width = 20, height = 20;
   let myArray = [];
   for(let i=0; i<height; i++){
 	myArray[i] = [];
@@ -21,7 +21,7 @@ class Grid extends Component{
 		snake: []
 	}
 	cutSnakeTail = () => {
-		const {originalGrid, foodPosition, clearSnake} = this.props;
+		const {originalGrid, foodPosition, clearSnake, getSnake} = this.props;
 		const {snake, grid} = this.state;
 		let myGrid = [...grid];
 		let snakeCopy = [...snake];
@@ -33,12 +33,13 @@ class Grid extends Component{
 			grid: myGrid,
 			snake: snakeCopy
 		});
+		getSnake(snake);
 	}
 	manageSnake = (coord) => {
 		this.createSnakeBody(coord);
 		this.putSnakeOnGrid(coord);
 		count++;
-		if(count>3){
+		if(count>7){
 			this.cutSnakeTail();
 			count--;
 		}
@@ -96,7 +97,7 @@ class Grid extends Component{
 	}
 
     componentDidMount(){
-		let myVar = setInterval(this.giveDirection.bind(this), 300)
+		let myVar = setInterval(this.giveDirection.bind(this), 400)
 	}
 	render(){
 	  const {getNextGrid, grid, snakeDirection, snakeHeadPosition} = this.props;
