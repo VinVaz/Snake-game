@@ -27,7 +27,6 @@ function getRandomDirection(){
 }
 
 class Generation extends Component{
-	//here lies a state that must be adapated to redux system
     state = {
 		originalGrid: gridGenerator(),
 		grid: gridGenerator(),
@@ -35,11 +34,17 @@ class Generation extends Component{
 		snakeHeadPosition: [],
 		snakePosition: [],
 		foodPosition: [],
-		snake: []
+		snake: [],
+		points: 0
 	}
 	getNextGrid = (nextGrid) => {
 		this.setState({
 			grid: nextGrid
+		});
+	}
+	getHowManyPoints = (val) => {
+		this.setState({
+			points: val
 		});
 	}
 	getNewCoord = (coord) => {
@@ -48,9 +53,14 @@ class Generation extends Component{
 		});
 	}
 	createFood = () => {
-		const {grid} = this.state;
+		const {grid, snake} = this.state;
 		const myGrid = [...grid];
 		let food = getRandomCoordinateInArray(10, 10);
+		let foodIsInTheSnake = snake.includes(food);
+		while(foodIsInTheSnake){
+			food = getRandomCoordinateInArray(10, 10);
+			foodIsInTheSnake = snake.includes(food);
+		}
 		myGrid[food[0]][food[1]] = 2;
 		this.setState({
 			grid: myGrid,
@@ -74,16 +84,31 @@ class Generation extends Component{
 		});
 	}
 	setOriginalState = () => {
-        this.createFood()
+		this.createFood()
 		this.createSnake()
 	}
 	getSnakeDirection = (direction) => {
-		this.setState({
-		  snakeDirection: direction
-		});
+		const {snakeDirection, points} = this.state;
+		  if(
+		    (
+			  (direction == 'UP' && snakeDirection == 'DOWN') ||
+		      (direction == 'DOWN' && snakeDirection == 'UP') ||
+		      (direction == 'LEFT' && snakeDirection == 'RIGHT') ||
+		      (direction == 'RIGHT' && snakeDirection == 'LEFT')
+			)&& points != 0
+		){
+		  this.setState({
+		    snakeDirection: snakeDirection
+		  });	
+		}else {
+		  this.setState({
+		    snakeDirection: direction
+		  });
+		}
+		
 	}
 	render(){
-	  const {grid, snakeDirection, snakeHeadPosition, originalGrid, snakePosition, foodPosition} = this.state;
+	  const {grid, snakeDirection, snakeHeadPosition, originalGrid, snakePosition, foodPosition, points} = this.state;
 	  return(
         <div>
 		  <Grid 
@@ -96,6 +121,9 @@ class Generation extends Component{
 			foodPosition={foodPosition}
             getNewCoord ={this.getNewCoord}
 			getSnake={this.getSnake}
+			createFood={this.createFood}
+			getHowManyPoints={this.getHowManyPoints}
+			totalPoints={points}
 		  />	
           <Graphics grid={grid}/>
           <button onClick={this.setOriginalState}>start</button>
