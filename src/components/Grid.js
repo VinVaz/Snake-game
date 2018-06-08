@@ -48,6 +48,16 @@ class Grid extends Component{
 		    getHowManyPoints(newPoint)
 		  }	
 	}
+	isGameOver = (newCoord) => {
+	  const {closeGame, grid} = this.props;
+	  if(grid[newCoord[0]][newCoord[1]] == 1){
+		   this.setState({
+			  grid: gridGenerator(),
+		      snake: []
+		  });
+		  closeGame();
+	  }
+	}
 	manageSnake = (coord) => {
 		this.createSnakeBody(coord);
 		this.putSnakeOnGrid(coord);

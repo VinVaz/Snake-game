@@ -42,6 +42,17 @@ class Generation extends Component{
 			grid: nextGrid
 		});
 	}
+	closeGame = () => {
+		this.setState({
+		grid: gridGenerator(),
+		snakeDirection: "",
+		snakeHeadPosition: [],
+		snakePosition: [],
+		foodPosition: [],
+		snake: [],
+		points: 0
+	   });
+	}
 	getHowManyPoints = (val) => {
 		this.setState({
 			points: val
@@ -89,23 +100,21 @@ class Generation extends Component{
 	}
 	getSnakeDirection = (direction) => {
 		const {snakeDirection, points} = this.state;
-		  if(
-		    (
+		  //doesn't allows the snake go backwards:
+		  if((
 			  (direction == 'UP' && snakeDirection == 'DOWN') ||
 		      (direction == 'DOWN' && snakeDirection == 'UP') ||
 		      (direction == 'LEFT' && snakeDirection == 'RIGHT') ||
 		      (direction == 'RIGHT' && snakeDirection == 'LEFT')
-			)&& points != 0
-		){
-		  this.setState({
-		    snakeDirection: snakeDirection
-		  });	
-		}else {
-		  this.setState({
-		    snakeDirection: direction
-		  });
-		}
-		
+			)&& points != 0){
+		    this.setState({
+		      snakeDirection: snakeDirection
+		    });	
+		  }else {
+		    this.setState({
+		      snakeDirection: direction
+		    });	
+		  }
 	}
 	render(){
 	  const {grid, snakeDirection, snakeHeadPosition, originalGrid, snakePosition, foodPosition, points} = this.state;
@@ -124,6 +133,7 @@ class Generation extends Component{
 			createFood={this.createFood}
 			getHowManyPoints={this.getHowManyPoints}
 			totalPoints={points}
+			closeGame={this.closeGame}
 		  />	
           <Graphics grid={grid}/>
           <button onClick={this.setOriginalState}>start</button>
