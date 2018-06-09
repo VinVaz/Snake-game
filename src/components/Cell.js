@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 
 const SnakeCellStyle = {
-	backgroundColor: "#f00",
+	backgroundColor: "#f4b3b4",
 	height: "100%",
 	width: "100%",
 	border: "1px solid #200"
 }
 const FoodCellStyle = {
-	backgroundColor: "#0f0",
+	backgroundColor: "#039933",
 	height: "100%",
 	width: "100%",
 	border: "1px solid #200"

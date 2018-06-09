@@ -14,26 +14,33 @@ function gridGenerator(){
   return myArray;  
 }
 let count = 0;
+
 class Grid extends Component{
 	state ={
 		grid: this.props.grid,
 		snake: [],
-		snakeSize: 2
+		snakeSize: 0
 	}
 	cutSnakeTail = () => {
-		const {originalGrid, foodPosition, clearSnake, getSnake} = this.props;
-		const {snake, grid} = this.state;
-		let myGrid = [...grid];
+		const {getSnake} = this.props;
+		const {snake} = this.state;
 		let snakeCopy = [...snake];
         snakeCopy.shift();
+		this.setState({
+			snake: snakeCopy
+		});
+		getSnake(snake);
+	}
+	cutSnakeTailOffTheGrid = () => {
+		const {grid, snake} = this.state;
+		let myGrid = [...grid];
+		let snakeCopy = [...snake];
 		//cleans the snake's tail
 		let snakeTail = snakeCopy[0]
 		myGrid[snakeTail[0]][snakeTail[1]] = 0;
 		this.setState({
-			grid: myGrid,
-			snake: snakeCopy
+			grid: myGrid
 		});
-		getSnake(snake);
 	}
 	snakeAtesTheFood = () =>{
 		const {snake} = this.state;
@@ -61,9 +68,11 @@ class Grid extends Component{
 	manageSnake = (coord) => {
 		this.createSnakeBody(coord);
 		this.putSnakeOnGrid(coord);
+		console.log(this.state.snake)
 		count++;
 		if(count>this.state.snakeSize){
 			this.cutSnakeTail();
+			this.cutSnakeTailOffTheGrid();
 			count--;
 		}
 	}
@@ -113,9 +122,9 @@ class Grid extends Component{
 		  default:
 		    break;
           }
-		  getNewCoord(coord);
 		  this.snakeAtesTheFood();
 		  this.manageSnake(coord);
+		  getNewCoord(coord);
 		}		  
 	}
 
@@ -123,18 +132,8 @@ class Grid extends Component{
 		let myVar = setInterval(this.giveDirection.bind(this), 400)
 	}
 	render(){
-	  const {getNextGrid, grid, snakeDirection, snakeHeadPosition} = this.props;
 	  return( 
-	    <div>
-	  	  <Food grid={grid}/>
-		  <Snake 
-		    grid={grid} 
-		    snakeDirection={snakeDirection} 
-			getNextGrid={getNextGrid}
-			snakeHeadPosition={snakeHeadPosition}
-			putSnakeOnGrid={this.putSnakeOnGrid.bind(this)}
-		  />
-	    </div>
+	    <div />
 	  );
 	}
 } 
