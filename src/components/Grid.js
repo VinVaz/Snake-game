@@ -14,50 +14,62 @@ function gridGenerator(){
   return myArray;  
 }
 let count = 0;
-
+/*
+function limiter(coord){
+	if(coord[1] > width-1){
+	   coord[1] = 0;
+	} else if(coord[1] < 0){
+		coord[1] = width-1;
+	}else if(coord[0] < 0){
+	  coord[0] = height-1;
+	} else if(coord[0] > height-1){
+	  coord[0] = 0;
+	}
+	return coord;
+}
+*/
+var newItemSound = new Audio('http://soundbible.com/mp3/Ting-Popup_Pixels-349896185.mp3');
 class Grid extends Component{
 	state ={
-		grid: this.props.grid,
 		snake: [],
-		snakeSize: 0
+		snakeSize: 1
 	}
 	cutSnakeTail = () => {
-		const {getSnake} = this.props;
 		const {snake} = this.state;
 		let snakeCopy = [...snake];
         snakeCopy.shift();
 		this.setState({
 			snake: snakeCopy
 		});
-		getSnake(snake);
 	}
-	cutSnakeTailOffTheGrid = () => {
-		const {grid, snake} = this.state;
+	cutOffSnakeTailOfTheGrid = () => {
+		const {snake} = this.state;
+		const {getNextGrid, grid} = this.props;
 		let myGrid = [...grid];
 		let snakeCopy = [...snake];
 		//cleans the snake's tail
 		let snakeTail = snakeCopy[0]
 		myGrid[snakeTail[0]][snakeTail[1]] = 0;
-		this.setState({
-			grid: myGrid
-		});
+		getNextGrid(myGrid);
 	}
 	snakeAtesTheFood = () =>{
-		const {snake} = this.state;
-		const {createFood, foodPosition, totalPoints, getHowManyPoints} = this.props;
+		const {snake, snakeSize} = this.state;
+		const {createNewFood, foodPosition, totalPoints, getHowManyPoints} = this.props;
 		const snakeHead = snake[snake.length - 1];
-		this.setState({
-			snakeSize: totalPoints + 2
-		});
 		  if(snakeHead && (snakeHead.toString() == foodPosition.toString())){
-			createFood();
+			createNewFood();
+			//newItemSound.play();
+			this.setState({
+			  snakeSize: snakeSize + 1
+		    });
 			let newPoint = totalPoints + 1;
 		    getHowManyPoints(newPoint)
 		  }	
 	}
 	isGameOver = (newCoord) => {
 	  const {closeGame, grid} = this.props;
-	  if(grid[newCoord[0]][newCoord[1]] == 1){
+	  let gridCopy = [...grid]
+	  if(gridCopy[newCoord[0]][newCoord[1]] == 1){
 		   this.setState({
 			  grid: gridGenerator(),
 		      snake: []
@@ -66,21 +78,22 @@ class Grid extends Component{
 	  }
 	}
 	manageSnake = (coord) => {
-		this.createSnakeBody(coord);
 		this.putSnakeOnGrid(coord);
-		console.log(this.state.snake)
+		this.createSnakeBody(coord);
 		count++;
 		if(count>this.state.snakeSize){
+			this.cutOffSnakeTailOfTheGrid();
 			this.cutSnakeTail();
-			this.cutSnakeTailOffTheGrid();
 			count--;
 		}
 	}
     putSnakeOnGrid(coord){
-		const {getNextGrid} = this.props;
-		const {grid} = this.state;
+		const {getNextGrid, grid} = this.props;
 		let myGrid = [...grid];
 		myGrid[coord[0]][coord[1]] = 1;
+		this.setState({
+			grid: myGrid
+		});
 		getNextGrid(myGrid);
 	}
 	createSnakeBody = (coord) => {
@@ -127,7 +140,12 @@ class Grid extends Component{
 		  getNewCoord(coord);
 		}		  
 	}
-
+    increase = () => {
+		const {snakeSize} = this.state;
+		this.setState({
+		  snakeSize: snakeSize + 1	
+		});
+	}
     componentDidMount(){
 		let myVar = setInterval(this.giveDirection.bind(this), 400)
 	}

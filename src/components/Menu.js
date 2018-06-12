@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import Generation from "./Generation.js";
 
 const MenuContainerStyle = {
-	margin: "0.1px",
 	backgroundColor: 'black',
 	height: '60vmin',
 	width: '80%',

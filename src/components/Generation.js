@@ -15,11 +15,8 @@ const gridFrame = new GridFrame(20, 20);
 class Generation extends Component{
     state = {
 		grid: gridFrame.create(),
-		snakeDirection: "",
-		snakeHeadPosition: [],
 		snakePosition: [],
 		foodPosition: [],
-		snake: [],
 		points: 0
 	}
 	getNextGrid = (nextGrid) => {
@@ -30,10 +27,8 @@ class Generation extends Component{
 	closeGame = () => {
 		this.setState({
 		grid: gridFrame.create(),
-		snakeDirection: this.props.snakeDirection,
 		snakePosition: [],
 		foodPosition: [],
-		snake: [],
 		points: 0
 	   });
 	}
@@ -47,45 +42,42 @@ class Generation extends Component{
 			snakePosition: coord
 		});
 	}
-	createFood = () => {
-		const {grid, snake} = this.state;
+	createNewFood = () => {
+		const {grid, foodPosition} = this.state;
 		const myGrid = [...grid];
-		let food = gridFrame.randomCoordinates;
-		let foodIsInTheSnake = snake.includes(food);
-		while(foodIsInTheSnake){
-			food = gridFrame.randomCoordinates;
-			foodIsInTheSnake = snake.includes(food);
+		let newFood = gridFrame.randomCoordinates;
+		while(myGrid[newFood[0]][newFood[1]]==1){
+			newFood = gridFrame.randomCoordinates;
 		}
-		myGrid[food[0]][food[1]] = 2;
+		if(foodPosition.length > 0){
+			myGrid[foodPosition[0]][foodPosition[1]] = 1;
+		}
+		myGrid[newFood[0]][newFood[1]] = 2;
 		this.setState({
 			grid: myGrid,
-            foodPosition: food			
+            foodPosition: newFood			
 		});
 	}
 	createSnake = () => {
 		const {grid} = this.state;
+		const {getSnakeDirection} = this.props;
 		const myGrid = [...grid];
 		let snake = gridFrame.randomCoordinates;
 		myGrid[snake[0]][snake[1]] = 1;
 		this.setState({
 			grid: myGrid,
-            snakePosition: snake,
-            snakeDirection: getRandomDirection()
+            snakePosition: snake
 		});
-	}
-	getSnake = (arr) => {
-		this.setState({
-		  snake: arr
-		});
+		getSnakeDirection(getRandomDirection());
 	}
 	setOriginalState = () => {
-		this.createFood()
+		this.createNewFood()
 		this.createSnake()
 	}
 	
 	render(){
 	  const {grid, originalGrid, snakePosition, foodPosition, points} = this.state;
-	   const {snakeDirection} = this.props;
+	  const {snakeDirection} = this.props;
 	  return(
         <div>
 		  <Grid 
@@ -97,7 +89,7 @@ class Generation extends Component{
 			foodPosition={foodPosition}
             getNewCoord ={this.getNewCoord}
 			getSnake={this.getSnake}
-			createFood={this.createFood}
+			createNewFood={this.createNewFood}
 			getHowManyPoints={this.getHowManyPoints}
 			totalPoints={points}
 			closeGame={this.closeGame}
