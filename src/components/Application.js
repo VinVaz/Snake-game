@@ -22,15 +22,28 @@ const GameContainerStyle = {
 }
 
 class Application extends Component{
-	
+	state = {
+		score: 0
+	}
+	getScore = (val) =>{
+		this.setState({
+			score: val
+		});
+	}
 	render(){
+	  const {score} = this.state;
+	  const {setSnakeDirection, snakeDirection} = this.props;
 	  return(
         <div style={ContainerStyle}>
 		  <div style={MenuContainerStyle}>
-		    <Menu />
+		    <Menu score={score}/>
 		  </div>
 		  <div style={GameContainerStyle}>
-		    <Game />
+		    <Game 
+			  getScore={this.getScore}
+			  setSnakeDirection={setSnakeDirection}
+			  snakeDirection={snakeDirection}
+			/>
 		  </div>		
 	    </div>
 	  );	

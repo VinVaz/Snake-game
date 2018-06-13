@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import Snake from "./Snake.js";
-import Food from "./Food.js";
+import Bite from "../sound/bite.mp3"
+
 
 function gridGenerator(){
   const width = 20, height = 20;
@@ -14,26 +14,20 @@ function gridGenerator(){
   return myArray;  
 }
 let count = 0;
-/*
-function limiter(coord){
-	if(coord[1] > width-1){
-	   coord[1] = 0;
-	} else if(coord[1] < 0){
-		coord[1] = width-1;
-	}else if(coord[0] < 0){
-	  coord[0] = height-1;
-	} else if(coord[0] > height-1){
-	  coord[0] = 0;
-	}
-	return coord;
-}
-*/
-var newItemSound = new Audio('http://soundbible.com/mp3/Ting-Popup_Pixels-349896185.mp3');
+
+var newItemSound = new Audio(Bite);
 class Grid extends Component{
-	state ={
+	constructor(props){
+		super(props)
+		this.state ={
 		snake: [],
-		snakeSize: 1
+		snakeSize: 1,
+		valueBeforeSnake: 0,
+		points: 0,
+		gameIsPaused: false
+	    }
 	}
+	
 	cutSnakeTail = () => {
 		const {snake} = this.state;
 		let snakeCopy = [...snake];
@@ -53,33 +47,47 @@ class Grid extends Component{
 		getNextGrid(myGrid);
 	}
 	snakeAtesTheFood = () =>{
-		const {snake, snakeSize} = this.state;
-		const {createNewFood, foodPosition, totalPoints, getHowManyPoints} = this.props;
-		const snakeHead = snake[snake.length - 1];
-		  if(snakeHead && (snakeHead.toString() == foodPosition.toString())){
+		const {snake, snakeSize, valueBeforeSnake, points} = this.state;
+		const {createNewFood, foodPosition, getScore, grid} = this.props;
+		let gridCopy = [...grid];
+		  if(valueBeforeSnake == 2){
 			createNewFood();
-			//newItemSound.play();
+			newItemSound.play();
 			this.setState({
-			  snakeSize: snakeSize + 1
+			  snakeSize: snakeSize + 1,
+			  points: points + 1
 		    });
-			let newPoint = totalPoints + 1;
-		    getHowManyPoints(newPoint)
 		  }	
+		getScore(points * 15);
 	}
-	isGameOver = (newCoord) => {
-	  const {closeGame, grid} = this.props;
+	gameOver = () => {
+	  const {resetGenerationState, grid} = this.props;
 	  let gridCopy = [...grid]
-	  if(gridCopy[newCoord[0]][newCoord[1]] == 1){
+	  if(this.state.valueBeforeSnake == 1){
+		  clearInterval(this.intervalVar);
 		   this.setState({
-			  grid: gridGenerator(),
-		      snake: []
+		      snake: [],
+			  snakeSize: 1,
+			  valueBeforeSnake: 0
 		  });
-		  closeGame();
+		  resetGenerationState();
 	  }
 	}
+	pause = () => {
+		const {gameIsPaused} = this.state;
+		this.setState({
+				gameIsPaused: !gameIsPaused
+			});
+		if(gameIsPaused==false){
+			clearInterval(this.intervalVar);
+		}
+		else{
+			this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
+		}
+	}
 	manageSnake = (coord) => {
-		this.putSnakeOnGrid(coord);
 		this.createSnakeBody(coord);
+		this.putSnakeOnGrid(coord);
 		count++;
 		if(count>this.state.snakeSize){
 			this.cutOffSnakeTailOfTheGrid();
@@ -91,9 +99,6 @@ class Grid extends Component{
 		const {getNextGrid, grid} = this.props;
 		let myGrid = [...grid];
 		myGrid[coord[0]][coord[1]] = 1;
-		this.setState({
-			grid: myGrid
-		});
 		getNextGrid(myGrid);
 	}
 	createSnakeBody = (coord) => {
@@ -102,7 +107,7 @@ class Grid extends Component{
 		  });
 	}
 	giveDirection =()=>{
-		const {snakeDirection, grid, snakePosition, getNewCoord} = this.props;
+		const {snakeDirection, grid, snakePosition, getNewSnakePosition} = this.props;
 		const height = grid.length;
 		const width = grid[0].length;
 		let coord = [...snakePosition];
@@ -135,23 +140,27 @@ class Grid extends Component{
 		  default:
 		    break;
           }
+		  this.setState({
+			  valueBeforeSnake: grid[coord[0]][coord[1]]
+		  })
+		  this.gameOver();
 		  this.snakeAtesTheFood();
 		  this.manageSnake(coord);
-		  getNewCoord(coord);
+		  getNewSnakePosition(coord);
 		}		  
 	}
-    increase = () => {
-		const {snakeSize} = this.state;
-		this.setState({
-		  snakeSize: snakeSize + 1	
-		});
+	componentDidMount(){
+		  this.intervalVar = setInterval(this.giveDirection.bind(this), 300);
 	}
-    componentDidMount(){
-		let myVar = setInterval(this.giveDirection.bind(this), 400)
+	componentWillUnmount(){
+	   clearInterval(this.intervalVar)	
 	}
+
 	render(){
 	  return( 
-	    <div />
+	    <div>
+		  <button onClick={this.pause}>pause</button>
+		</div>
 	  );
 	}
 } 

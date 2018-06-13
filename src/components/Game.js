@@ -11,48 +11,43 @@ const GameBackgroundStyle = {
 }
 
 class Game extends Component{	
-    state = {
-		snakeDirection: ""
-	}
+    
 	handleDirections = (event) => {
-		const currentDirection = this.state.snakeDirection;
-		let direction = currentDirection;
+		const {setSnakeDirection, snakeDirection} = this.props;
+		const oldDirection = snakeDirection;
+		let direction = oldDirection;
 		switch(event.keyCode){
 			case 39:
-			  if(currentDirection == 'LEFT') break;
+			  if(oldDirection == 'LEFT') break;
 			  direction = 'RIGHT';
 			  break;
 			case 37:
-			  if(currentDirection == 'RIGHT') break;
+			  if(oldDirection == 'RIGHT') break;
 			  direction = 'LEFT';
 			  break;
 			case 38:
-			  if(currentDirection == 'DOWN') break;
+			  if(oldDirection == 'DOWN') break;
 			  direction = 'UP';
 			  break;
 			case 40:
-			  if(currentDirection == 'UP') break;
+			  if(oldDirection == 'UP') break;
 			  direction = 'DOWN';
 			  break;
 			default: 
 			  break;  			
 		}
+		setSnakeDirection(direction)
 		event.preventDefault();
+	}
 	
-		this.setState({
-			   snakeDirection: direction 
-			});
-	}
-	getSnakeDirection = (direction) => {
-		this.setState({
-			   snakeDirection: direction 
-			});
-	}
 	render(){
-	  const {snakeDirection} = this.state;
+	  const {getScore, snakeDirection} = this.props;
 	  return(
         <div style={GameBackgroundStyle} onKeyDown={this.handleDirections} tabIndex="0">
-          <Generation snakeDirection={snakeDirection} getSnakeDirection={this.getSnakeDirection}/>		
+          <Generation 
+		    snakeDirection={snakeDirection} 
+			getScore={getScore}
+		  />		
 	    </div>
 	  );	
 	}

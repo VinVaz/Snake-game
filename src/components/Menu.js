@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Generation from "./Generation.js";
+import Button from "./Button.js"
 
 const MenuContainerStyle = {
 	backgroundColor: 'black',
@@ -15,10 +16,14 @@ const MenuContainerStyle = {
 class Menu extends Component{
 	
 	render(){
+	  const {score} = this.props;
 	  return(
         <div style={MenuContainerStyle}>
-         MENU:
-		 level
+		 <h3>SNAKE</h3>
+         <p>Score:{ " " + score}</p>
+		 <Button />
+		 <Button />
+		 <Button />
 	    </div>
 	  );	
 	}

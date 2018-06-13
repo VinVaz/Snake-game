@@ -4,12 +4,6 @@ import Graphics from "./Graphics.js";
 import GridFrame from "./GridFrame.js"
 
 
-function getRandomDirection(){
-	const directions = ['UP', 'DOWN', 'RIGHT', 'LEFT'];
-	const index = Math.floor(Math.random()* 4);
-	return directions[index];
-}
-
 const gridFrame = new GridFrame(20, 20);
 
 class Generation extends Component{
@@ -17,27 +11,22 @@ class Generation extends Component{
 		grid: gridFrame.create(),
 		snakePosition: [],
 		foodPosition: [],
-		points: 0
+		isGameOver: true
 	}
 	getNextGrid = (nextGrid) => {
 		this.setState({
 			grid: nextGrid
 		});
 	}
-	closeGame = () => {
+	resetState = () => {
 		this.setState({
-		grid: gridFrame.create(),
-		snakePosition: [],
-		foodPosition: [],
-		points: 0
+			grid: gridFrame.create(),
+			snakePosition: [],
+			foodPosition: [],
+			isGameOver: true
 	   });
 	}
-	getHowManyPoints = (val) => {
-		this.setState({
-			points: val
-		});
-	}
-	getNewCoord = (coord) => {
+	getNewSnakePosition = (coord) => {
 		this.setState({
 			snakePosition: coord
 		});
@@ -50,7 +39,7 @@ class Generation extends Component{
 			newFood = gridFrame.randomCoordinates;
 		}
 		if(foodPosition.length > 0){
-			myGrid[foodPosition[0]][foodPosition[1]] = 1;
+			myGrid[foodPosition[0]][foodPosition[1]] = 0;
 		}
 		myGrid[newFood[0]][newFood[1]] = 2;
 		this.setState({
@@ -58,26 +47,23 @@ class Generation extends Component{
             foodPosition: newFood			
 		});
 	}
+
 	createSnake = () => {
-		const {grid} = this.state;
-		const {getSnakeDirection} = this.props;
-		const myGrid = [...grid];
 		let snake = gridFrame.randomCoordinates;
-		myGrid[snake[0]][snake[1]] = 1;
 		this.setState({
-			grid: myGrid,
             snakePosition: snake
 		});
-		getSnakeDirection(getRandomDirection());
 	}
-	setOriginalState = () => {
-		this.createNewFood()
-		this.createSnake()
+	startGame = () => {
+		this.createNewFood();
+		this.createSnake();
+		this.setState({
+			isGameOver: false
+		});
 	}
-	
 	render(){
-	  const {grid, originalGrid, snakePosition, foodPosition, points} = this.state;
-	  const {snakeDirection} = this.props;
+	  const {grid, originalGrid, snakePosition, foodPosition, points, isGameOver} = this.state;
+	  const {snakeDirection, getScore} = this.props;
 	  return(
         <div>
 		  <Grid 
@@ -87,15 +73,16 @@ class Generation extends Component{
 			snakeDirection={snakeDirection}
 			snakePosition={snakePosition}
 			foodPosition={foodPosition}
-            getNewCoord ={this.getNewCoord}
+            getNewSnakePosition ={this.getNewSnakePosition}
 			getSnake={this.getSnake}
 			createNewFood={this.createNewFood}
-			getHowManyPoints={this.getHowManyPoints}
 			totalPoints={points}
-			closeGame={this.closeGame}
+			resetGenerationState={this.resetState}
+			getScore={getScore}
+			isGameOver={isGameOver}
 		  />	
           <Graphics grid={grid}/>
-          <button onClick={this.setOriginalState}>start</button>
+		  	  <button onClick={this.startGame}>start</button>
 	    </div>
 	  );	
 	}
