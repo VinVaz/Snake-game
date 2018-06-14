@@ -3,7 +3,7 @@ import { setDirection } from '../actions';
 import Application from '../components/Application';
 
 const mapStateToProps = state => ({
-  snakeDirection: state.direction
+  snakeDirection: state
 })
 
 const mapDispatchToProps = dispatch => ({
