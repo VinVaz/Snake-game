@@ -2,31 +2,18 @@ import React, {Component} from "react";
 import Bite from "../sound/bite.mp3"
 
 
-function gridGenerator(){
-  const width = 20, height = 20;
-  let myArray = [];
-  for(let i=0; i<height; i++){
-	myArray[i] = [];
-	for(let j=0; j<width; j++){
-	  myArray[i][j] = 0;
-    }
-  }
-  return myArray;  
-}
+
 let count = 0;
 
 var newItemSound = new Audio(Bite);
 class Grid extends Component{
-	constructor(props){
-		super(props)
-		this.state ={
-		snake: [],
-		snakeSize: 1,
-		valueBeforeSnake: 0,
-		points: 0,
-		gameIsPaused: false
+	state ={
+		  snake: [],
+		  snakeSize: 1,
+		  valueBeforeSnake: 0,
+		  points: 0,
+		  gameIsPaused: true
 	    }
-	}
 	
 	cutSnakeTail = () => {
 		const {snake} = this.state;
@@ -45,45 +32,6 @@ class Grid extends Component{
 		let snakeTail = snakeCopy[0]
 		myGrid[snakeTail[0]][snakeTail[1]] = 0;
 		getNextGrid(myGrid);
-	}
-	snakeAtesTheFood = () =>{
-		const {snake, snakeSize, valueBeforeSnake, points} = this.state;
-		const {createNewFood, foodPosition, getScore, grid} = this.props;
-		let gridCopy = [...grid];
-		  if(valueBeforeSnake == 2){
-			createNewFood();
-			newItemSound.play();
-			this.setState({
-			  snakeSize: snakeSize + 1,
-			  points: points + 1
-		    });
-		  }	
-		getScore(points * 15);
-	}
-	gameOver = () => {
-	  const {resetGenerationState, grid} = this.props;
-	  let gridCopy = [...grid]
-	  if(this.state.valueBeforeSnake == 1){
-		  clearInterval(this.intervalVar);
-		   this.setState({
-		      snake: [],
-			  snakeSize: 1,
-			  valueBeforeSnake: 0
-		  });
-		  resetGenerationState();
-	  }
-	}
-	pause = () => {
-		const {gameIsPaused} = this.state;
-		this.setState({
-				gameIsPaused: !gameIsPaused
-			});
-		if(gameIsPaused==false){
-			clearInterval(this.intervalVar);
-		}
-		else{
-			this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
-		}
 	}
 	manageSnake = (coord) => {
 		this.createSnakeBody(coord);
@@ -106,12 +54,61 @@ class Grid extends Component{
 			  snake: [...this.state.snake, coord]
 		  });
 	}
+	snakeAtesTheFood = () =>{
+		const {snake, snakeSize, valueBeforeSnake, points} = this.state;
+		const {createNewFood, foodPosition, getScore, grid} = this.props;
+		let gridCopy = [...grid];
+		  if(valueBeforeSnake == 2){
+			createNewFood();
+			newItemSound.play();
+			this.setState({
+			  snakeSize: snakeSize + 1,
+			  points: points + 1
+		    });
+		  }	
+		getScore(points * 15);
+	}
+	gameOver = () => {
+	  const {resetGenerationState, grid, isGameOver} = this.props;
+	  let gridCopy = [...grid]
+	  if(this.state.valueBeforeSnake == 1 ){
+		   resetGenerationState();
+		   this.setState({
+		      snake: [],
+			  snakeSize: 1,
+			  valueBeforeSnake: 0,
+			  points: 0
+		  });
+		  count = 0;
+	  }
+	}
+	pause = () => {
+		const {gameIsPaused} = this.state;
+		this.setState({
+				gameIsPaused: !gameIsPaused
+			});
+		if(gameIsPaused == false){
+			this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
+		} else{
+			clearInterval(this.intervalVar);
+		}
+	}
+	timeController = () => {
+		const {isGameOver} = this.props;
+        if(isGameOver == false){
+			this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
+		} else{
+			clearInterval(this.intervalVar);
+		}		
+	}
+
+	
 	giveDirection =()=>{
 		const {snakeDirection, grid, snakePosition, getNewSnakePosition} = this.props;
 		const height = grid.length;
 		const width = grid[0].length;
 		let coord = [...snakePosition];
-		if(snakePosition.length>0){
+		if(coord.length>0 && this.props.isGameOver==false){
           switch(snakeDirection){
 		    case 'RIGHT':
 		      if(coord[1]<width-1){
@@ -146,12 +143,16 @@ class Grid extends Component{
 		  this.gameOver();
 		  this.snakeAtesTheFood();
 		  this.manageSnake(coord);
-		  getNewSnakePosition(coord);
-		}		  
+		} else {
+			coord = [];
+		}	
+	getNewSnakePosition(coord);
 	}
-	componentDidMount(){
-		  this.intervalVar = setInterval(this.giveDirection.bind(this), 300);
+    componentDidMount(){
+		//this.timeController();
+		this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
 	}
+	
 	componentWillUnmount(){
 	   clearInterval(this.intervalVar)	
 	}

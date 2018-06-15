@@ -11,7 +11,7 @@ class Generation extends Component{
 		grid: gridFrame.create(),
 		snakePosition: [],
 		foodPosition: [],
-		isGameOver: true
+		isGameOver: false
 	}
 	getNextGrid = (nextGrid) => {
 		this.setState({
