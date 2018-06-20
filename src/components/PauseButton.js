@@ -4,18 +4,18 @@ const buttonStyle = {
 	width: '80%',
 	height: '30px',
 	margin: '5px auto 5px auto',
-	border: 'none',
+	border: '5px solid #000',
 	borderRadius: '15px',
-	color: '#fff',
-	backgroundColor: '#444303',
+	color: '#000',
+	backgroundColor: '#fff',
 	cursor: 'pointer'
 }
 
 const Button = (props) => {
-  const {label} = props;
+    const {pauseGame} = props;
 	return(
 	<div>
-      <button style={buttonStyle}>{label}</button>
+      <button style={buttonStyle} onClick={()=>( pauseGame() )}>PAUSE</button>
 	</div>
     )
 }

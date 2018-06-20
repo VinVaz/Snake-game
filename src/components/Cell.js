@@ -7,7 +7,7 @@ const SnakeCellStyle = {
 	border: "1px solid #200"
 }
 const FoodCellStyle = {
-	backgroundColor: "#039933",
+	backgroundColor: "#02892d",
 	height: "100%",
 	width: "100%",
 	border: "1px solid #200"

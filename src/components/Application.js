@@ -1,59 +1,45 @@
 import React, {Component} from "react";
-import Game from "./Game.js";
-import Menu from "./Menu.js";
-
-const ContainerStyle = {
-	width: '100%',
-	position: 'relative',
-	height: '90vh',
-}
-const MenuContainerStyle = {
-	display: "inline-block",
-	width: '20%',
-	float: 'left',
-	height: '100%'
-} 
-const GameContainerStyle = {
-	display: "inline-block",
-	float: 'right',
-	width: '76%',
-	height: '100%',
-	marginLeft: '2% 0% 2% 0%'
-}
+import Generation from "./Generation.js";
 
 class Application extends Component{
-	state = {
-		score: 0,
-		gameIsRunning: false
+	
+	handleDirections = (event) => {
+		const {setSnakeDirection, snakeDirection} = this.props;
+		const oldDirection = snakeDirection;
+		let direction = oldDirection;
+		switch(event.keyCode){
+			case 39:
+			  if(oldDirection == 'LEFT') break;
+			  direction = 'RIGHT';
+			  break;
+			case 37:
+			  if(oldDirection == 'RIGHT') break;
+			  direction = 'LEFT';
+			  break;
+			case 38:
+			  if(oldDirection == 'DOWN') break;
+			  direction = 'UP';
+			  break;
+			case 40:
+			  if(oldDirection == 'UP') break;
+			  direction = 'DOWN';
+			  break;
+			default: 
+			  break;  			
+		}
+		setSnakeDirection(direction)
+		event.preventDefault();
 	}
-	getScore = (val) =>{
-		this.setState({
-			score: val
-		});
-	}
-	handleStart = () => {
-		this.setState({
-			gameIsRunning: true
-		});
+	componentDidMount(){
+		document.querySelector('body').style.backgroundColor = '#9ab4b3';
 	}
 	render(){
-	  const {score} = this.state;
-	  const {setSnakeDirection, snakeDirection} = this.props;
+	  const {snakeDirection} = this.props;
 	  return(
-        <div style={ContainerStyle}>
-		  <div style={MenuContainerStyle}>
-		    <Menu 
-			  score={score}
-			  handleStart={this.handleStart}
-			/>
-		  </div>
-		  <div style={GameContainerStyle}>
-		    <Game 
-			  getScore={this.getScore}
-			  setSnakeDirection={setSnakeDirection}
-			  snakeDirection={snakeDirection}
-			/>
-		  </div>		
+	    <div onKeyDown={this.handleDirections} tabIndex="0">
+          <Generation 
+		    snakeDirection={snakeDirection}
+		  />
 	    </div>
 	  );	
 	}

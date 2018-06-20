@@ -12,10 +12,10 @@ const buttonStyle = {
 }
 
 const Button = (props) => {
-    const {handleStart} = props;
+    const {startGame} = props;
 	return(
 	<div>
-      <button style={buttonStyle} onClick={handleStart}>START</button>
+      <button style={buttonStyle} onClick={()=>( startGame() )}>START</button>
 	</div>
     )
 }

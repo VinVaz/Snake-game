@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import Graphics from "./Graphics.js";
+import Layout from "./Layout.js";
 import GridFrame from "./GridFrame.js"
 import Bite from "../sound/bite.mp3"
 
@@ -118,7 +118,6 @@ class Grid extends Component{
 	}
 	checkIfSnakeAteTheFood = () =>{
 		const {snakeSize, valueBeforeSnake, points, grid, createNewFood} = this.state;
-		const {getScore} = this.props;
 		let gridCopy = [...grid];
 		  if(valueBeforeSnake == 2){
 			this.createNewFood();
@@ -128,7 +127,6 @@ class Grid extends Component{
 			  points: points + 1
 		    });
 		  }	
-		getScore(points * 15);
 	}
 	checkIfGameIsOver = () => {
 		const {valueBeforeSnake} = this.state;
@@ -203,12 +201,15 @@ class Grid extends Component{
 	}
 
 	render(){
-	const {grid} = this.state;
+	const {grid, points} = this.state;
 	  return( 
 	    <div>
-		  <Graphics grid={grid}/>
-		  <button onClick={this.pause}>pause</button>
-		  <button onClick={this.startGame}>start</button>
+		  <Layout 
+		    grid = {grid} 
+			score = {15 * points}
+			startGame = {this.startGame}
+			pauseGame = {this.pause}
+		  />
 		</div>
 	  );
 	}

@@ -8,7 +8,7 @@ const GridStyle = {
 	margin: "auto"
 }
 
-class Graphics extends Component{	
+class Grid extends Component{	
 	generateRows = (grid) => {
 		return grid.map((row, i) => {
 			return <Row
@@ -28,4 +28,4 @@ class Graphics extends Component{
 	}
 } 
 
-export default Graphics;
+export default Grid;

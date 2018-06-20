@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Generation from "./Generation.js";
 import Button from "./Button.js"
 import StartButton from "./StartButton.js"
+import PauseButton from "./PauseButton.js"
 
 const MenuContainerStyle = {
 	backgroundColor: 'black',
@@ -12,19 +13,19 @@ const MenuContainerStyle = {
 	border: '8px solid #000',
 	borderRadius: '8px',
 	textAlign: 'center',
-	backgroundColor: '#fff'
+	backgroundColor: '#fefefe'
 }
 
 class Menu extends Component{
 	render(){
-	  const {score, handleStart} = this.props;
+	  const {score, pauseGame, startGame} = this.props;
 	  return(
         <div style={MenuContainerStyle}>
-		 <h3>SNAKE</h3>
-         <p>Score:{ " " + score}</p>
-		 <Button label={'SOUND'}/>
-		 <StartButton handleStart={handleStart}/>
-		 <Button label={'PAUSE'}/>
+		  <h3>SNAKE</h3>
+          <p>Score:{ " " + score}</p>
+		  <Button label={'SOUND'}/>
+		  <StartButton startGame={startGame}/>
+		  <PauseButton pauseGame={pauseGame}/>
 	    </div>
 	  );	
 	}
