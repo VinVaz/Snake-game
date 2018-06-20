@@ -23,11 +23,17 @@ const GameContainerStyle = {
 
 class Application extends Component{
 	state = {
-		score: 0
+		score: 0,
+		gameIsRunning: false
 	}
 	getScore = (val) =>{
 		this.setState({
 			score: val
+		});
+	}
+	handleStart = () => {
+		this.setState({
+			gameIsRunning: true
 		});
 	}
 	render(){
@@ -36,7 +42,10 @@ class Application extends Component{
 	  return(
         <div style={ContainerStyle}>
 		  <div style={MenuContainerStyle}>
-		    <Menu score={score}/>
+		    <Menu 
+			  score={score}
+			  handleStart={this.handleStart}
+			/>
 		  </div>
 		  <div style={GameContainerStyle}>
 		    <Game 

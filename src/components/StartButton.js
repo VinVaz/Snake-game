@@ -12,10 +12,10 @@ const buttonStyle = {
 }
 
 const Button = (props) => {
-  const {label} = props;
+    const {handleStart} = props;
 	return(
 	<div>
-      <button style={buttonStyle}>{label}</button>
+      <button style={buttonStyle} onClick={handleStart}>START</button>
 	</div>
     )
 }

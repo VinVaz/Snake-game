@@ -44,7 +44,7 @@ class Game extends Component{
 	  const {getScore, snakeDirection} = this.props;
 	  return(
         <div style={GameBackgroundStyle} onKeyDown={this.handleDirections} tabIndex="0">
-          <Generation 
+          <Generation
 		    snakeDirection={snakeDirection} 
 			getScore={getScore}
 		  />		
