@@ -9,19 +9,19 @@ class Application extends Component{
 		let direction = oldDirection;
 		switch(event.keyCode){
 			case 39:
-			  if(oldDirection == 'LEFT') break;
+			  if(oldDirection === 'LEFT') break;
 			  direction = 'RIGHT';
 			  break;
 			case 37:
-			  if(oldDirection == 'RIGHT') break;
+			  if(oldDirection === 'RIGHT') break;
 			  direction = 'LEFT';
 			  break;
 			case 38:
-			  if(oldDirection == 'DOWN') break;
+			  if(oldDirection === 'DOWN') break;
 			  direction = 'UP';
 			  break;
 			case 40:
-			  if(oldDirection == 'UP') break;
+			  if(oldDirection === 'UP') break;
 			  direction = 'DOWN';
 			  break;
 			default: 
