@@ -4,8 +4,8 @@ import Row from "./Row.js";
 const GridStyle = {
 	height: "60vmin",
 	width: "60vmin",
-	position: "relative",
-	margin: "auto"
+	zIndex: '1',
+	margin: '3vmin'
 }
 
 class Grid extends Component{	

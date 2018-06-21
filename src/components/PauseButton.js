@@ -2,20 +2,24 @@ import React from "react";
 
 const buttonStyle = {
 	width: '80%',
-	height: '30px',
-	margin: '5px auto 5px auto',
-	border: '5px solid #000',
+	height: '5vmin',
+	margin: '1vmin auto',
+	border: '0.8vmin solid #000',
 	borderRadius: '15px',
 	color: '#000',
 	backgroundColor: '#fff',
-	cursor: 'pointer'
+	cursor: 'pointer',
+	fontSize: '2.2vmin'
 }
 
 const Button = (props) => {
-    const {pauseGame} = props;
+    const {pauseGame, gameIsPaused} = props;
 	return(
 	<div>
-      <button style={buttonStyle} onClick={()=>( pauseGame() )}>PAUSE</button>
+      <button 
+	    style={buttonStyle} 
+		onClick={()=>( pauseGame() )}
+	  >{(gameIsPaused ? 'PAUSE' : 'PLAY')}</button>
 	</div>
     )
 }

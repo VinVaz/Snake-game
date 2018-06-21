@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Layout from "./Layout.js";
 import GridFrame from "./GridFrame.js"
 import Bite from "../sound/bite.mp3"
+import Crash from "../sound/crash.mp3"
 
 
 /*
@@ -15,20 +16,25 @@ const gridFrame = new GridFrame(20, 20);
 let count = 0;
 
 var newItemSound = new Audio(Bite);
-class Grid extends Component{
+var crashSound = new Audio(Crash);
+
+class GameLogic extends Component{
 	state ={
 	  grid: gridFrame.create(),
 	  snakePosition: [],
 	  foodPosition: [],
 	  isGameFinished: true,
+	  gameOverSign: false,
 	  startButtonPressed: false,
 	  snake: [],
 	  snakeSize: 1,
 	  valueBeforeSnake: 0,
 	  points: 0,
+	  lastScore: 0,
 	  gameIsPaused: true
 	}
 	resetState = () => {
+		count = 0;
 		this.setState({
 		  grid: gridFrame.create(),
 		  snakePosition: [],
@@ -64,16 +70,19 @@ class Grid extends Component{
 		});
 	}
 	startGame = () => {
-		this.createNewFood();
-		this.createSnake();
-		const {startButtonPressed} = this.state;
-		if(startButtonPressed == false){
+		const {startButtonPressed, isGameFinished} = this.state;
+		if(isGameFinished){
+		  this.createNewFood();
+		  this.createSnake();
+		  if(startButtonPressed == false){
 			this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
-		}
-		this.setState({
+		  }
+		  this.setState({
 			isGameFinished: false,
-			startButtonPressed: true
-		});
+			startButtonPressed: true,
+			gameOverSign: false
+		  });
+		}
 	}
 	removeLastPositionFromSnake = () => {
 		const {snake} = this.state;
@@ -129,22 +138,29 @@ class Grid extends Component{
 		  }	
 	}
 	checkIfGameIsOver = () => {
-		const {valueBeforeSnake} = this.state;
+		const {valueBeforeSnake, points} = this.state;
 	    if(valueBeforeSnake == 1 ){
-		   this.resetState();
-		   count = 0;
+		   crashSound.play();
 		   clearInterval(this.intervalVar)
+		   this.resetState();
+		   this.setState({
+			  gameOverSign: true,
+			  lastScore: (15 * points)
+		   });
 	    } 
+		
 	}
 	pause = () => {
-		const {gameIsPaused} = this.state;
-		this.setState({
-				gameIsPaused: !gameIsPaused
-			});
-		if(gameIsPaused == false){
+		const {gameIsPaused, isGameFinished} = this.state;
+		if(isGameFinished == false){
+		  if(gameIsPaused == false){
 			this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
-		} else{
+		  } else{
 			clearInterval(this.intervalVar);
+		  }
+		  this.setState({
+			gameIsPaused: !gameIsPaused
+		  });	
 		}
 	}
 
@@ -201,7 +217,7 @@ class Grid extends Component{
 	}
 
 	render(){
-	const {grid, points} = this.state;
+	const {grid, points, gameIsPaused, gameOverSign, lastScore} = this.state;
 	  return( 
 	    <div>
 		  <Layout 
@@ -209,10 +225,13 @@ class Grid extends Component{
 			score = {15 * points}
 			startGame = {this.startGame}
 			pauseGame = {this.pause}
+			gameIsPaused = {gameIsPaused}
+			gameOverSign={gameOverSign}
+			lastScore = {lastScore}
 		  />
 		</div>
 	  );
 	}
 } 
 
-export default Grid;
+export default GameLogic;
