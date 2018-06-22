@@ -24,14 +24,14 @@ const pStyle = {
 
 class Menu extends Component{
 	render(){
-	  const {score, pauseGame, startGame, gameIsPaused} = this.props;
+	  const {score, pauseGame, startGame, isGamePaused} = this.props;
 	  return(
         <div style={MenuContainerStyle}>
 		  <h1 style={h1Style}>SNAKE</h1>
           <p style={pStyle}>SCORE:{ " " + score}</p>
 		  <SoundButton label={'SOUND'}/>
 		  <StartButton startGame={startGame}/>
-		  <PauseButton pauseGame={pauseGame} gameIsPaused={gameIsPaused}/>
+		  <PauseButton pauseGame={pauseGame} isGamePaused={isGamePaused}/>
 	    </div>
 	  );	
 	}

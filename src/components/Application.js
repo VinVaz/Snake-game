@@ -33,12 +33,15 @@ class Application extends Component{
 	componentDidMount(){
 		document.querySelector('body').style.backgroundColor = '#9ab4b3';
 	}
+
 	render(){
-	  const {snakeDirection} = this.props;
+	  const {snakeDirection, isGamePaused, togglePauseGame} = this.props;
 	  return(
 	    <div onKeyDown={this.handleDirections} tabIndex="0">
           <Generation 
 		    snakeDirection={snakeDirection}
+			isGamePaused={isGamePaused}
+			togglePauseGame={togglePauseGame}
 		  />
 	    </div>
 	  );	

@@ -27,7 +27,7 @@ const GameBackgroundStyle = {
 class Layout extends Component{	
     
 	render(){
-	  const {grid, score, pauseGame, startGame, gameIsPaused, gameOverSign, lastScore} = this.props;
+	  const {grid, score, pauseGame, startGame, gameOverSign, lastScore, isGamePaused} = this.props;
 	  return(
         <div style={ContainerStyle}>
 		  <div style={MenuContainerStyle}>
@@ -35,7 +35,7 @@ class Layout extends Component{
 			  score={score}
 			  pauseGame={pauseGame}
 			  startGame={startGame}
-			  gameIsPaused={gameIsPaused}
+			  isGamePaused={isGamePaused}
 			/>
 		  </div>
 		  <div style={GameContainerStyle}>

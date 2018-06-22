@@ -30,8 +30,7 @@ class GameLogic extends Component{
 	  snakeSize: 1,
 	  valueBeforeSnake: 0,
 	  points: 0,
-	  lastScore: 0,
-	  gameIsPaused: true
+	  lastScore: 0
 	}
 	resetState = () => {
 		count = 0;
@@ -150,17 +149,18 @@ class GameLogic extends Component{
 	    } 
 		
 	}
+
 	pause = () => {
-		const {gameIsPaused, isGameFinished} = this.state;
+		const {isGameFinished} = this.state;
+		const  {togglePauseGame, isGamePaused} = this.props;
+		
 		if(isGameFinished == false){
-		  if(gameIsPaused == false){
+		  if(isGamePaused == true){
 			this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
 		  } else{
 			clearInterval(this.intervalVar);
 		  }
-		  this.setState({
-			gameIsPaused: !gameIsPaused
-		  });	
+          togglePauseGame();			  
 		}
 	}
 
@@ -217,7 +217,8 @@ class GameLogic extends Component{
 	}
 
 	render(){
-	const {grid, points, gameIsPaused, gameOverSign, lastScore} = this.state;
+	const {grid, points, gameOverSign, lastScore} = this.state;
+	const  {isGamePaused} = this.props;
 	  return( 
 	    <div>
 		  <Layout 
@@ -225,7 +226,7 @@ class GameLogic extends Component{
 			score = {15 * points}
 			startGame = {this.startGame}
 			pauseGame = {this.pause}
-			gameIsPaused = {gameIsPaused}
+			isGamePaused = {isGamePaused}
 			gameOverSign={gameOverSign}
 			lastScore = {lastScore}
 		  />

@@ -4,8 +4,8 @@ export const startGame = id => ({
   id
 })
 
-export const pausePlayGame = () => ({
-  type: 'PAUSE_PLAY_GAME',
+export const togglePauseGame = () => ({
+  type: 'TOGGLE_PAUSE_GAME',
 })
 
 export const setDirection = direction => ({

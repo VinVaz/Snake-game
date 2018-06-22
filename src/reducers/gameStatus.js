@@ -1,9 +1,9 @@
-import { pausePlayGame } from '../actions';
+import { togglePauseGame } from '../actions';
 
 
-const gameStatus = (state = {isGamePaused: true}, action) => {
+const gameStatus = (state = {isGamePaused: false}, action) => {
   switch (action.type){
-    case 'PAUSE_PLAY_GAME':
+    case 'TOGGLE_PAUSE_GAME':
       return {
 		isGamePaused: !state.isGamePaused
 	  };

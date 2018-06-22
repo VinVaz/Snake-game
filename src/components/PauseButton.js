@@ -13,13 +13,13 @@ const buttonStyle = {
 }
 
 const Button = (props) => {
-    const {pauseGame, gameIsPaused} = props;
+    const {pauseGame, isGamePaused} = props;
 	return(
 	<div>
       <button 
 	    style={buttonStyle} 
-		onClick={()=>( pauseGame() )}
-	  >{(gameIsPaused ? 'PAUSE' : 'PLAY')}</button>
+		onClick={()=> pauseGame()}
+	  >{(isGamePaused ? 'PLAY' : 'PAUSE')}</button>
 	</div>
     )
 }
