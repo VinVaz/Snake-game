@@ -6,9 +6,9 @@ const gameStatus = (state = {isGamePaused: true}, action) => {
     case 'PAUSE_PLAY_GAME':
       return {
 		isGamePaused: !state.isGamePaused
-	  } 
+	  };
     default:
-      return state.isGamePaused;
+      return state;
   }
 }
 
