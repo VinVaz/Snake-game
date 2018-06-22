@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux'
-import direction from './direction';
+import { combineReducers } from 'redux';
+import elements from './elements';
 import gameStatus from './gameStatus';
+import gameScore from './gameScore';
 
 export default combineReducers({
-	direction,
-	gameStatus
+	elements,
+	gameStatus,
+	gameScore
 });

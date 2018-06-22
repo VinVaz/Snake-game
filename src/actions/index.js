@@ -1,7 +1,10 @@
 
-export const startGame = id => ({
+export const startGame = () => ({
   type: 'START_GAME',
-  id
+})
+
+export const endGame = () => ({
+  type: 'END_GAME',
 })
 
 export const togglePauseGame = () => ({
@@ -24,3 +27,33 @@ export const Directions = {
 	return directions[index];
   }
 }
+
+export const  snakeSizeIncrement = () => ({
+  type: 'SNAKE_SIZE_INCREMENT',
+})
+
+export const restartSnakeAttributes = () => ({
+  type: 'RESTART_SNAKE_ATTRIBUTES',
+})
+
+export const setSnakePosition = position => ({
+  type: 'SET_SNAKE_POSITION',
+  position
+})
+
+export const scoreIncrement = () => ({
+  type: 'SCORE_INCREMENT',
+})
+
+export const scoreRestart = () => ({
+  type: 'SCORE_RESTART',
+})
+
+export const foodRestart = () => ({
+  type: 'FOOD_RESTART',
+})
+
+export const setFoodPosition = position => ({
+  type: 'SET_FOOD_POSITION',
+  position
+})

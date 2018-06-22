@@ -31,7 +31,7 @@ const GameOver = (props) => {
         <div style={GameOverStyle}>
 	      <h1 style={textStyle}>{'GAME OVER!'}</h1>
 		  <br />
-		  <p style={scoreStyle}>{'SCORE: ' + props.lastScore}</p>
+		  <p style={scoreStyle}>{'SCORE: ' + props.lastingScore}</p>
 	    </div>
 	  );	
 

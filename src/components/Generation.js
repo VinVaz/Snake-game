@@ -11,6 +11,8 @@ import Crash from "../sound/crash.mp3"
  The snake is represented by the number 1, the food by the number 2 and 
  the empty cells of the grid each have a value equivalent to 0.
 */
+//The coordinates of any given positional reference are represented by arrays
+
 
 const gridFrame = new GridFrame(20, 20);
 let count = 0;
@@ -21,33 +23,28 @@ var crashSound = new Audio(Crash);
 class GameLogic extends Component{
 	state ={
 	  grid: gridFrame.create(),
-	  snakePosition: [],
-	  foodPosition: [],
-	  isGameFinished: true,
 	  gameOverSign: false,
 	  startButtonPressed: false,
 	  snake: [],
-	  snakeSize: 1,
 	  valueBeforeSnake: 0,
-	  points: 0,
-	  lastScore: 0
 	}
 	resetState = () => {
+		const {endGame, restartSnakeAttributes, scoreRestart, foodRestart} = this.props;
 		count = 0;
+		scoreRestart();
+		foodRestart();
+		restartSnakeAttributes();
+		endGame();
 		this.setState({
 		  grid: gridFrame.create(),
-		  snakePosition: [],
-		  foodPosition: [],
-		  isGameFinished: true,
 		  startButtonPressed: false,
 		  snake: [],
-		  snakeSize: 1,
 		  valueBeforeSnake: 0,
-		  points: 0,
 	   });
 	}
 	createNewFood = () => {
-		const {grid, foodPosition} = this.state;
+		const {grid} = this.state;
+		const {foodPosition, setFoodPosition} = this.props;
 		const newGrid = [...grid];
 		let newFood = gridFrame.randomCoordinates;
 		while(newGrid[newFood[0]][newFood[1]]==1){
@@ -57,27 +54,27 @@ class GameLogic extends Component{
 			newGrid[foodPosition[0]][foodPosition[1]] = 0;
 		}
 		newGrid[newFood[0]][newFood[1]] = 2;
+		setFoodPosition(newFood)
 		this.setState({
-			grid: newGrid,
-            foodPosition: newFood			
+			grid: newGrid,		
 		});
 	}
 	createSnake = () => {
-		let snake = gridFrame.randomCoordinates;
-		this.setState({
-            snakePosition: snake
-		});
+		const {setSnakePosition} = this.props;
+		let position = gridFrame.randomCoordinates;
+		setSnakePosition(position);
 	}
 	startGame = () => {
-		const {startButtonPressed, isGameFinished} = this.state;
-		if(isGameFinished){
+		const {startButtonPressed} = this.state;
+		const {isGameOver, startGame} = this.props;
+		if(isGameOver){
+		  startGame();
 		  this.createNewFood();
 		  this.createSnake();
 		  if(startButtonPressed == false){
 			this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
 		  }
 		  this.setState({
-			isGameFinished: false,
 			startButtonPressed: true,
 			gameOverSign: false
 		  });
@@ -105,7 +102,7 @@ class GameLogic extends Component{
 		this.addPositionToSnake(coord);
 		this.putSnakeOnGrid(coord);
 		count++;
-		if(count>this.state.snakeSize){
+		if(count>this.props.snakeSize){
 			this.removeSnakeTailFromTheGrid();
 			this.removeLastPositionFromSnake();
 			count--;
@@ -125,36 +122,30 @@ class GameLogic extends Component{
 		  });
 	}
 	checkIfSnakeAteTheFood = () =>{
-		const {snakeSize, valueBeforeSnake, points, grid, createNewFood} = this.state;
+		const {valueBeforeSnake, grid, createNewFood} = this.state;
+		const {snakeSizeIncrement, scoreIncrement} = this.props;
 		let gridCopy = [...grid];
 		  if(valueBeforeSnake == 2){
 			this.createNewFood();
 			newItemSound.play();
-			this.setState({
-			  snakeSize: snakeSize + 1,
-			  points: points + 1
-		    });
+			snakeSizeIncrement();
+			scoreIncrement();
 		  }	
 	}
 	checkIfGameIsOver = () => {
-		const {valueBeforeSnake, points} = this.state;
+		const {valueBeforeSnake} = this.state;
 	    if(valueBeforeSnake == 1 ){
 		   crashSound.play();
 		   clearInterval(this.intervalVar)
 		   this.resetState();
 		   this.setState({
 			  gameOverSign: true,
-			  lastScore: (15 * points)
 		   });
 	    } 
-		
 	}
-
 	pause = () => {
-		const {isGameFinished} = this.state;
-		const  {togglePauseGame, isGamePaused} = this.props;
-		
-		if(isGameFinished == false){
+		const  {togglePauseGame, isGamePaused, isGameOver} = this.props;
+		if(isGameOver == false){
 		  if(isGamePaused == true){
 			this.intervalVar = setInterval(this.giveDirection.bind(this), 300)
 		  } else{
@@ -163,14 +154,13 @@ class GameLogic extends Component{
           togglePauseGame();			  
 		}
 	}
-
 	giveDirection =()=>{
-		const {grid, snakePosition} = this.state;
-		const {snakeDirection} = this.props;
+		const {grid} = this.state;
+		const {snakeDirection, isGameOver, setSnakePosition, snakePosition} = this.props;
 		const height = grid.length;
 		const width = grid[0].length;
 		let coord = [...snakePosition];
-		if(coord.length>0 && this.state.isGameFinished==false){
+		if(coord.length>0 && isGameOver==false){
           switch(snakeDirection){
 		    case 'RIGHT':
 		      if(coord[1]<width-1){
@@ -207,9 +197,7 @@ class GameLogic extends Component{
 		} else {
 			coord = [];
 		}
-	  this.setState({
-			snakePosition: coord
-		});
+	    setSnakePosition(coord);
 	}
 	
 	componentWillUnmount(){
@@ -217,18 +205,18 @@ class GameLogic extends Component{
 	}
 
 	render(){
-	const {grid, points, gameOverSign, lastScore} = this.state;
-	const  {isGamePaused} = this.props;
+	const {grid, gameOverSign} = this.state;
+	const {isGamePaused, score, lastingScore} = this.props;
 	  return( 
 	    <div>
 		  <Layout 
 		    grid = {grid} 
-			score = {15 * points}
+			score = {score}
 			startGame = {this.startGame}
 			pauseGame = {this.pause}
 			isGamePaused = {isGamePaused}
 			gameOverSign={gameOverSign}
-			lastScore = {lastScore}
+			lastingScore = {lastingScore}
 		  />
 		</div>
 	  );

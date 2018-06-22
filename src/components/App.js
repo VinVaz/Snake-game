@@ -1,10 +1,10 @@
 import React from 'react'
-import SetDirection from '../containers/SetDirection'
+import Container from '../containers/index.js'
 
 const App = () => (
   <div>
-    <SetDirection />
+    <Container />
   </div>
 )
 
-export default App
+export default App;

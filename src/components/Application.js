@@ -35,13 +35,48 @@ class Application extends Component{
 	}
 
 	render(){
-	  const {snakeDirection, isGamePaused, togglePauseGame} = this.props;
+	  const {
+		snakeDirection,
+	    isGamePaused, 
+		togglePauseGame, 
+		isGameOver,
+		endGame,
+		startGame,
+		snakeSizeIncrement,
+		restartSnakeAttributes,
+		snakeSize,
+		setSnakePosition,
+		snakePosition,
+		scoreIncrement,
+		scoreRestart,
+		score,
+		lastingScore,
+		foodRestart,
+		setFoodPosition,
+		foodPosition
+		} = this.props;
+	  
 	  return(
 	    <div onKeyDown={this.handleDirections} tabIndex="0">
           <Generation 
-		    snakeDirection={snakeDirection}
-			isGamePaused={isGamePaused}
-			togglePauseGame={togglePauseGame}
+		    snakeDirection = {snakeDirection}
+			isGamePaused = {isGamePaused}
+			togglePauseGame = {togglePauseGame}
+			isGameOver = {isGameOver}
+			endGame = {endGame}
+			startGame = {startGame}
+			snakeSizeIncrement = {snakeSizeIncrement}
+			restartSnakeAttributes = {restartSnakeAttributes}
+			snakeSize = {snakeSize}
+			setSnakePosition = {setSnakePosition}
+		    snakePosition = {snakePosition}
+			scoreIncrement = {scoreIncrement}
+		    scoreRestart = {scoreRestart}
+			score = {score}
+			lastingScore = {lastingScore}
+			foodRestart = {foodRestart}
+		    setFoodPosition = {setFoodPosition}
+			foodPosition = {foodPosition}
 		  />
 	    </div>
 	  );	
