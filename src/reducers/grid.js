@@ -6,7 +6,7 @@ const grid = (state = {cellValueBeforeSnake: 0} , action) => {
 		...state,
 		cellValueBeforeSnake: action.val
 	  };  
-	case 'RESTART_CELLVALUE_BEFORE_SNAKE':
+	case 'RESTART_GAME_ATTRIBUTES':
       return {
 	    ...state,
 		cellValueBeforeSnake: 0

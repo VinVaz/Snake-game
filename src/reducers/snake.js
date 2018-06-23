@@ -13,7 +13,7 @@ const snake = (state = {direction: Directions.RANDOM, position: [], size: 1} , a
 		...state,
 		size: newSize
 	  };
-	case 'RESTART_SNAKE_ATTRIBUTES':
+	case 'RESTART_GAME_ATTRIBUTES':
       return {
 	    ...state,
 		position: [],

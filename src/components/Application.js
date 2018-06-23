@@ -43,20 +43,17 @@ class Application extends Component{
 		endGame,
 		startGame,
 		snakeSizeIncrement,
-		restartSnakeAttributes,
 		snakeSize,
 		setSnakePosition,
 		snakePosition,
 		scoreIncrement,
-		scoreRestart,
 		score,
 		lastingScore,
-		foodRestart,
 		setFoodPosition,
 		foodPosition,
 		setCellValueBeforeSnake,
 		gridCellValueBeforeSnake,
-		restartCellValueBeforeSnake
+		restartGameAttributes
 		} = this.props;
 	  
 	  return(
@@ -69,20 +66,17 @@ class Application extends Component{
 			endGame = {endGame}
 			startGame = {startGame}
 			snakeSizeIncrement = {snakeSizeIncrement}
-			restartSnakeAttributes = {restartSnakeAttributes}
 			snakeSize = {snakeSize}
 			setSnakePosition = {setSnakePosition}
 		    snakePosition = {snakePosition}
 			scoreIncrement = {scoreIncrement}
-		    scoreRestart = {scoreRestart}
 			score = {score}
 			lastingScore = {lastingScore}
-			foodRestart = {foodRestart}
 		    setFoodPosition = {setFoodPosition}
 			foodPosition = {foodPosition}
 			setCellValueBeforeSnake = {setCellValueBeforeSnake}
 		    gridCellValueBeforeSnake = {gridCellValueBeforeSnake}
-			restartCellValueBeforeSnake = {restartCellValueBeforeSnake}
+			restartGameAttributes = {restartGameAttributes}
 		  />
 	    </div>
 	  );	

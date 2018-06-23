@@ -10,7 +10,7 @@ const gameScore = (state = {points: 0, score: 0, lastingScore: 0} , action) => {
 		score: newScore,
 		lastingScore: newScore
 	  }; 
-    case 'SCORE_RESTART':
+    case 'RESTART_GAME_ATTRIBUTES':
       return {
 		...state,
 		points: 0,

@@ -2,7 +2,7 @@ import {setDirection, Directions} from '../actions';
 
 const food = (state = {position: []} , action) => { 
  switch (action.type){
-    case 'FOOD_RESTART':
+    case 'RESTART_GAME_ATTRIBUTES':
       return {
 		...state,
 		position: []

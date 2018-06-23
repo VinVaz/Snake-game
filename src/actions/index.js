@@ -32,10 +32,6 @@ export const  snakeSizeIncrement = () => ({
   type: 'SNAKE_SIZE_INCREMENT',
 })
 
-export const restartSnakeAttributes = () => ({
-  type: 'RESTART_SNAKE_ATTRIBUTES',
-})
-
 export const setSnakePosition = position => ({
   type: 'SET_SNAKE_POSITION',
   position
@@ -43,14 +39,6 @@ export const setSnakePosition = position => ({
 
 export const scoreIncrement = () => ({
   type: 'SCORE_INCREMENT',
-})
-
-export const scoreRestart = () => ({
-  type: 'SCORE_RESTART',
-})
-
-export const foodRestart = () => ({
-  type: 'FOOD_RESTART',
 })
 
 export const setFoodPosition = position => ({
@@ -63,6 +51,6 @@ export const setCellValueBeforeSnake = val => ({
   val
 })
 
-export const restartCellValueBeforeSnake = () => ({
-  type: 'RESTART_CELLVALUE_BEFORE_SNAKE',
+export const restartGameAttributes = () => ({
+  type: 'RESTART_GAME_ATTRIBUTES',
 })

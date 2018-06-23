@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Grid from "./Grid.js";
 import GameOver from "./GameOver.js";
 import Menu from "./Menu.js";
+import PropTypes from 'prop-types';
 
 const ContainerStyle = {
 	position: 'relative'
@@ -47,6 +48,15 @@ class Layout extends Component{
 	    </div>
 	  );	
 	}
-} 
+}
+ 
+Layout.propTypes = {
+  score: PropTypes.number,
+  pauseGame: PropTypes.func.isRequired,
+  startGame: PropTypes.func.isRequired,
+  isGamePaused: PropTypes.bool.isRequired,
+  gameOverSign: PropTypes.bool,
+  lastingScore: PropTypes.number,
+}
 
 export default Layout;

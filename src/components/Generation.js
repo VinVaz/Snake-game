@@ -28,19 +28,9 @@ class GameLogic extends Component{
 	  snake: []
 	}
 	resetState = () => {
-		const {
-			endGame, 
-			restartSnakeAttributes, 
-			scoreRestart, 
-			foodRestart, 
-			restartCellValueBeforeSnake
-		} = this.props;
-		
+		const { endGame, restartGameAttributes} = this.props;
 		count = 0;
-		scoreRestart();
-		foodRestart();
-		restartSnakeAttributes();
-		restartCellValueBeforeSnake();
+		restartGameAttributes();
 		endGame();
 		this.setState({
 		  grid: gridFrame.create(),
@@ -162,7 +152,14 @@ class GameLogic extends Component{
 	}
 	giveDirection =()=>{
 		const {grid} = this.state;
-		const {snakeDirection, isGameOver, setSnakePosition, snakePosition, setCellValueBeforeSnake} = this.props;
+		const {
+			snakeDirection,
+		    isGameOver,
+			setSnakePosition,
+			snakePosition,
+			setCellValueBeforeSnake
+			} = this.props;
+			
 		const height = grid.length;
 		const width = grid[0].length;
 		let coord = [...snakePosition];

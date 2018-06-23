@@ -5,14 +5,11 @@ import { setDirection,
 		 endGame,
 		 startGame,
 		 snakeSizeIncrement,
-		 restartSnakeAttributes,
 		 setSnakePosition,
 		 scoreIncrement,
-		 scoreRestart,
-		 foodRestart,
 		 setFoodPosition,
 		 setCellValueBeforeSnake,
-		 restartCellValueBeforeSnake
+		 restartGameAttributes
 	   } from '../actions';
 
 const mapStateToProps = state => ({
@@ -33,14 +30,11 @@ const mapDispatchToProps = dispatch => ({
   endGame: () => dispatch(endGame()),
   startGame: () => dispatch(startGame()),
   snakeSizeIncrement: () => dispatch(snakeSizeIncrement()),
-  restartSnakeAttributes: () => dispatch(restartSnakeAttributes()),
   setSnakePosition: position => dispatch(setSnakePosition(position)),
   scoreIncrement: () => dispatch(scoreIncrement()),
-  scoreRestart: () => dispatch(scoreRestart()),
-  foodRestart: () => dispatch(foodRestart()),
   setFoodPosition: position => dispatch(setFoodPosition(position)),
   setCellValueBeforeSnake: val => dispatch(setCellValueBeforeSnake(val)),
-  restartCellValueBeforeSnake: () => dispatch(restartCellValueBeforeSnake())
+  restartGameAttributes: () => dispatch(restartGameAttributes())
 });
 
 export default connect(
