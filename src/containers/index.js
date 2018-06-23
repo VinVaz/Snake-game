@@ -10,7 +10,9 @@ import { setDirection,
 		 scoreIncrement,
 		 scoreRestart,
 		 foodRestart,
-		 setFoodPosition
+		 setFoodPosition,
+		 setCellValueBeforeSnake,
+		 restartCellValueBeforeSnake
 	   } from '../actions';
 
 const mapStateToProps = state => ({
@@ -22,6 +24,7 @@ const mapStateToProps = state => ({
   isGameOver: state.gameStatus.isGameOver,
   score: state.gameScore.score,
   lastingScore: state.gameScore.lastingScore,
+  gridCellValueBeforeSnake: state.elements.grid.cellValueBeforeSnake
 });
 
 const mapDispatchToProps = dispatch => ({	
@@ -36,6 +39,8 @@ const mapDispatchToProps = dispatch => ({
   scoreRestart: () => dispatch(scoreRestart()),
   foodRestart: () => dispatch(foodRestart()),
   setFoodPosition: position => dispatch(setFoodPosition(position)),
+  setCellValueBeforeSnake: val => dispatch(setCellValueBeforeSnake(val)),
+  restartCellValueBeforeSnake: () => dispatch(restartCellValueBeforeSnake())
 });
 
 export default connect(

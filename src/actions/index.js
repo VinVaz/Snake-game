@@ -57,3 +57,12 @@ export const setFoodPosition = position => ({
   type: 'SET_FOOD_POSITION',
   position
 })
+
+export const setCellValueBeforeSnake = val => ({
+  type: 'SET_CELLVALUE_BEFORE_SNAKE',
+  val
+})
+
+export const restartCellValueBeforeSnake = () => ({
+  type: 'RESTART_CELLVALUE_BEFORE_SNAKE',
+})

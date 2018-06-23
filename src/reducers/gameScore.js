@@ -1,4 +1,3 @@
-import {setDirection, Directions} from '../actions';
 
 const gameScore = (state = {points: 0, score: 0, lastingScore: 0} , action) => { 
  switch (action.type){

@@ -25,21 +25,27 @@ class GameLogic extends Component{
 	  grid: gridFrame.create(),
 	  gameOverSign: false,
 	  startButtonPressed: false,
-	  snake: [],
-	  valueBeforeSnake: 0,
+	  snake: []
 	}
 	resetState = () => {
-		const {endGame, restartSnakeAttributes, scoreRestart, foodRestart} = this.props;
+		const {
+			endGame, 
+			restartSnakeAttributes, 
+			scoreRestart, 
+			foodRestart, 
+			restartCellValueBeforeSnake
+		} = this.props;
+		
 		count = 0;
 		scoreRestart();
 		foodRestart();
 		restartSnakeAttributes();
+		restartCellValueBeforeSnake();
 		endGame();
 		this.setState({
 		  grid: gridFrame.create(),
 		  startButtonPressed: false,
-		  snake: [],
-		  valueBeforeSnake: 0,
+		  snake: []
 	   });
 	}
 	createNewFood = () => {
@@ -122,10 +128,10 @@ class GameLogic extends Component{
 		  });
 	}
 	checkIfSnakeAteTheFood = () =>{
-		const {valueBeforeSnake, grid, createNewFood} = this.state;
-		const {snakeSizeIncrement, scoreIncrement} = this.props;
+		const {grid, createNewFood} = this.state;
+		const {snakeSizeIncrement, scoreIncrement, gridCellValueBeforeSnake} = this.props;
 		let gridCopy = [...grid];
-		  if(valueBeforeSnake == 2){
+		  if(gridCellValueBeforeSnake == 2){
 			this.createNewFood();
 			newItemSound.play();
 			snakeSizeIncrement();
@@ -133,8 +139,8 @@ class GameLogic extends Component{
 		  }	
 	}
 	checkIfGameIsOver = () => {
-		const {valueBeforeSnake} = this.state;
-	    if(valueBeforeSnake == 1 ){
+		const {gridCellValueBeforeSnake} = this.props;
+	    if(gridCellValueBeforeSnake == 1 ){
 		   crashSound.play();
 		   clearInterval(this.intervalVar)
 		   this.resetState();
@@ -156,7 +162,7 @@ class GameLogic extends Component{
 	}
 	giveDirection =()=>{
 		const {grid} = this.state;
-		const {snakeDirection, isGameOver, setSnakePosition, snakePosition} = this.props;
+		const {snakeDirection, isGameOver, setSnakePosition, snakePosition, setCellValueBeforeSnake} = this.props;
 		const height = grid.length;
 		const width = grid[0].length;
 		let coord = [...snakePosition];
@@ -189,9 +195,7 @@ class GameLogic extends Component{
 		  default:
 		    break;
           }
-		  this.setState({
-			  valueBeforeSnake: grid[coord[0]][coord[1]]
-		  })
+		  setCellValueBeforeSnake(grid[coord[0]][coord[1]]);
 		  this.manageSnake(coord);
 		  this.checkIfGameIsOver();
 		} else {

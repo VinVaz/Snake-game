@@ -53,7 +53,10 @@ class Application extends Component{
 		lastingScore,
 		foodRestart,
 		setFoodPosition,
-		foodPosition
+		foodPosition,
+		setCellValueBeforeSnake,
+		gridCellValueBeforeSnake,
+		restartCellValueBeforeSnake
 		} = this.props;
 	  
 	  return(
@@ -77,6 +80,9 @@ class Application extends Component{
 			foodRestart = {foodRestart}
 		    setFoodPosition = {setFoodPosition}
 			foodPosition = {foodPosition}
+			setCellValueBeforeSnake = {setCellValueBeforeSnake}
+		    gridCellValueBeforeSnake = {gridCellValueBeforeSnake}
+			restartCellValueBeforeSnake = {restartCellValueBeforeSnake}
 		  />
 	    </div>
 	  );	

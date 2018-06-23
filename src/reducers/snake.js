@@ -1,4 +1,4 @@
-import {setDirection, Directions} from '../actions';
+import { Directions } from '../actions';
 
 const snake = (state = {direction: Directions.RANDOM, position: [], size: 1} , action) => { 
  switch (action.type){
